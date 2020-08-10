@@ -18,6 +18,7 @@ def api(request):
         all_user = c.readAll()
     ##########################################
     # print(request.GET.dict()) #获取params
+    # if request.method == 'GET':
     try:
         body = request.body.decode()
         if body=='':
@@ -28,9 +29,17 @@ def api(request):
         print('not try')
         body = request.body
         recv = json.loads(body) #修改
-
+    # 登录时使用的post，mode放在params->GET.dict()，id密码在data->request.body.decode()
+    # print(request.GET.dict())
+    # print(request.POST.dict())
+    # print(request.body)
+    
+    try:
+        mode = recv['mode']
+    except:
+        #登陆时，mode在param->GET.dict(on POST）
+        mode = request.GET.dict()['mode']
     print(recv)
-    mode = recv['mode']
     print(mode)
 
   #  ===============
