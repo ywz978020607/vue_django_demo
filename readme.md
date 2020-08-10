@@ -67,3 +67,58 @@
 - Vue+django的策略方便了前端开发，也让前后端分离项目变得形散神不散、更加健壮
 
 - 部分参考：` https://zhuanlan.zhihu.com/p/25080236?open_source=weibo_search`
+
+
+
+日志 在uwsgi.ini中添加
+
+`daemonize = /var/www/django_vue/test.log`
+
+
+
+- 本模块为登录模块，为了最大可能复用登录模块，可以采用1个登录，多个账户的方案：
+
+  后端根据账户名进行跳转，跳转时注意区分前后路由，前端路由在vue中直接push即可，所以登录确认时，app1/views.py中加入前后端标识和url路径。
+
+  
+
+
+
+
+
+nginx 部署到9000端口示例
+
+```
+##9000
+upstream django_vue {
+     server unix:///var/www/django_vue/django1.sock;
+}
+server {
+	listen 9000;
+
+    charset utf-8;
+    access_log      /var/log/nginx/web_access.log;
+    error_log       /var/log/nginx/web_error.log;
+    
+    client_max_body_size 75M;
+    
+    location /static  {
+           alias /var/www/django_vue/vue1/dist/static;  # your Django project's media files - amend as required
+           autoindex on;
+    }
+    
+    location /files  {
+           alias /var/www/files;  # your Django project's media files - amend as required
+           autoindex on;
+    }
+    
+    location /  {
+        uwsgi_pass  django_vue;
+        include     /var/www/django_vue/uwsgi_params; # the uwsgi_params file you install
+    }
+
+}
+```
+
+
+

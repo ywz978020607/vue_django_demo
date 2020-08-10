@@ -64,7 +64,14 @@
                 //  catch(e){
                 //    console.log(e);
                 //  }
-                  this.$router.push("/homepage")
+                  // this.$router.push("/homepage")
+                  if(res.data['url_mode']=='0'){
+                    //前端路由
+                    this.$router.push(res.data['jump'])
+                  }
+                  else{
+                    window.location.href = res.data['jump'];
+                  }
                 }
                 else{
                   alert("wrong!")

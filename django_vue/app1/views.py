@@ -18,7 +18,11 @@ def api(request):
     ##########################################
     # print(request.GET) #获取params
     mode = request.GET['mode']
-    recv = json.loads(request.body)
+    try:
+        body = request.body.decode()
+    except:
+        body = request.body
+    recv = json.loads(body) #修改
     print(mode)
     print(recv)
   #  ===============
@@ -43,7 +47,11 @@ def api(request):
 
             #ok
             ret['status']='ok'
-            ret['token']='123'            
+            ret['token']='123'
+            #jump to
+            ret['url_mode']='1' #非0表示后端路由或其他路由，0表示页面内路由
+            ret['jump'] = "/files"
+
         else:
             ret['status'] = 'failed'
         return JsonResponse(ret)
