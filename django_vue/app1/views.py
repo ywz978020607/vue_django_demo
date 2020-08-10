@@ -3,6 +3,7 @@ import os
 from django.http import HttpResponse,JsonResponse
 import json
 import hashlib
+import requests
 from app1.config import *
 
 # Create your views here.
@@ -16,15 +17,22 @@ def api(request):
     else:
         all_user = c.readAll()
     ##########################################
-    # print(request.GET) #获取params
-    mode = request.GET['mode']
+    # print(request.GET.dict()) #获取params
     try:
         body = request.body.decode()
+        if body=='':
+            recv = request.GET.dict()
+        else:
+            recv = json.loads(body) #修改
     except:
+        print('not try')
         body = request.body
-    recv = json.loads(body) #修改
-    print(mode)
+        recv = json.loads(body) #修改
+
     print(recv)
+    mode = recv['mode']
+    print(mode)
+
   #  ===============
     ret = {}
     #注册
@@ -49,8 +57,12 @@ def api(request):
             ret['status']='ok'
             ret['token']='123'
             #jump to
-            ret['url_mode']='1' #非0表示后端路由或其他路由，0表示页面内路由
-            ret['jump'] = "/files"
+            if recv['username']=='kt':
+                ret['url_mode']='0' #非0表示后端路由或其他路由，0表示页面内前端路由
+                ret['jump'] = "/Control001/"
+            else:
+                ret['url_mode']='1' #非0表示后端路由或其他路由，0表示页面内路由
+                ret['jump'] = "/files/"
 
         else:
             ret['status'] = 'failed'
@@ -67,6 +79,38 @@ def api(request):
                 ret['status'] = 'wrongpwd'
         else:
             ret['status'] = 'notexisted'
+        return JsonResponse(ret)
+
+
+
+
+    #################################
+    elif mode=='remote_check' or mode=='remote_write':
+        #空调遥控
+        try:
+            username = recv['username']
+            c = config('remote.ini')
+            remote = c.readAll()
+            id = remote[username][0]
+            pwd = remote[username][1]
+            url="http://api.heclouds.com/devices/"+id+"/datapoints"
+            headers={'api-key':pwd}
+            if mode=='remote_check':
+                #收
+                r = requests.get(url,headers=headers)
+                ret['data'] = r.json()['data']
+                # print(ret)
+            else:
+                data_name = remote[username][2]
+                data_value = recv['data_value']
+                temp_list = []
+                temp_list.append({'id': data_name ,'datapoints':[{'value': data_value }]} )
+                data = {'datastreams':temp_list}
+                rp = requests.post(url, headers=headers, data=json.dumps(data))
+                rp.close()
+                ret['status'] = 'ok'
+        except:
+            print('error')
         return JsonResponse(ret)
 
     return JsonResponse(ret)

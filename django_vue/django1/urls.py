@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app1 import views 
+from app1 import views,views_onenet
 
 from django.views.generic import TemplateView
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path(r'', TemplateView.as_view(template_name="index.html")),
-    path(r'api/',views.api,name='api')
+    path(r'api/',views.api,name='api'),
+    path(r'api/onenet_check/',views_onenet.onenet_check,name='onenet_check'),
+    path(r'api/onenet_write/',views_onenet.onenet_write,name='onenet_write'),
+    
 ]
