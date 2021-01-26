@@ -1,7 +1,9 @@
 # Django+Vue 前后端分离工程
 
 ################################################################
-## [方法一: 更好的实现方法-插件式Vue+前后端分离](https://github.com/ywz978020607/History/tree/master/web%E7%9B%B8%E5%85%B3%20(python%E5%85%A8%E6%A0%88%E7%B3%BB%E5%88%97)/web%E5%A4%87%E4%BB%BD/django%E5%A4%87%E4%BB%BD/django-vue-plugin-bootstrap-jqhttp_axios)
+## [方法一(推荐): 更好的实现方法-插件式Vue+前后端分离](https://github.com/ywz978020607/History/tree/master/web%E7%9B%B8%E5%85%B3%20(python%E5%85%A8%E6%A0%88%E7%B3%BB%E5%88%97)/web%E5%A4%87%E4%BB%BD/django%E5%A4%87%E4%BB%BD/%E5%AE%8C%E7%BE%8E%E7%89%881-%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%2B%E8%AE%A4%E8%AF%81%2Bsqlite3%2B%E5%9F%BA%E7%A1%80%E6%9F%A5%E8%A1%A8-vue-plugin-jqhttp)
+
+[简易版](https://github.com/ywz978020607/History/tree/master/web%E7%9B%B8%E5%85%B3%20(python%E5%85%A8%E6%A0%88%E7%B3%BB%E5%88%97)/web%E5%A4%87%E4%BB%BD/django%E5%A4%87%E4%BB%BD/django-vue-plugin-bootstrap-jqhttp_axios)
 此种方法不需要nodejs环境进行安装和编译，适合小网站
 
 ################################################################
